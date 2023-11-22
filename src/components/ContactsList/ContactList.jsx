@@ -1,18 +1,23 @@
-import { ContactListItem } from 'components/ContactListItem/ContactListItem'
-import { StyledContactList, StyledListItem } from './ContactList.styled'
+import { ContactListItem } from 'components/ContactListItem/ContactListItem';
+import { StyledContactList, StyledListItem } from './ContactList.styled';
+import { useSelector } from 'react-redux';
 
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts);
+  const filterInput = useSelector(state => state.filter);
 
-export const ContactList = ({ contacts, deleteContact }) => {
-   return (
-      <>
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterInput.toLowerCase())
+  );
+  return (
+    <>
       <StyledContactList>
-         {contacts.map(contact => (
-            <StyledListItem key={contact.id}>
-               <ContactListItem contactData={contact} onDelete={deleteContact}/>
-            </StyledListItem>
-         ))}
-         
+        {filteredContacts.map(contact => (
+          <StyledListItem key={contact.id}>
+            <ContactListItem contactData={contact} />
+          </StyledListItem>
+        ))}
       </StyledContactList>
-      </>
-   )
-}
+    </>
+  );
+};
